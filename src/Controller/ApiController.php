@@ -6,6 +6,7 @@ use App\Service\ActivityService;
 use App\Service\WeatherService;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
+use OpenApi\Annotations as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,13 +17,45 @@ class ApiController extends AbstractController
     public function __construct(private WeatherService $weather)
     {}
 
-    #[Route('/v1/isitraining', name: 'api_is_it_raining')]
+    /**
+     * @OA\Parameter(
+     *     name="lat",
+     *     in="query",
+     *     description="Latitude",
+     *     required=true,
+     *     @OA\Schema(type="string", default="51.110743")
+     * )
+     * @OA\Parameter(
+     *     name="lon",
+     *     in="query",
+     *     description="Longitude",
+     *     required=true,
+     *     @OA\Schema(type="string", default="17.035002")
+     * )
+     */
+    #[Route('/v1/isitraining', name: 'api_is_it_raining', methods: ['GET'])]
     public function isItRaining(Request $request): JsonResponse
     {
         return $this->isItRainingResponse($request->query->get('lat'), $request->query->get('lon'));
     }
 
-    #[Route('/v1/whattodo', name: 'api_activity')]
+    /** 
+     * @OA\Parameter(
+     *     name="lat",
+     *     in="query",
+     *     description="Latitude",
+     *     required=true,
+     *     @OA\Schema(type="string", default="51.110743")
+     * )
+     * @OA\Parameter(
+     *     name="lon",
+     *     in="query",
+     *     description="Longitude",
+     *     required=true,
+     *     @OA\Schema(type="string", default="17.035002")
+     * )
+     */
+    #[Route('/v1/whattodo', name: 'api_activity', methods: ['GET'])]
     public function activity(Request $request, ActivityService $activityService): JsonResponse
     {
         $isItRainingResponse = $this->isItRaining($request);
