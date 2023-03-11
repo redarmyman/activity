@@ -55,3 +55,4 @@ class WeatherServiceTest extends TestCase
         $this->assertFalse($weatherService->ifRaining(0,0));
     }
 }
+

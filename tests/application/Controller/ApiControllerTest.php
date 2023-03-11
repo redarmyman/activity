@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class ApiControllerTest extends WebTestCase
 {
-    /* isitraing endpoint tests */
+    /* isitraining endpoint tests */
     public function testIsItRainingMissingLatRequest(): void
     {
         $client = static::createClient();
@@ -162,10 +162,10 @@ class ApiControllerTest extends WebTestCase
 
         $response = json_decode($client->getResponse()->getContent(), true);
 
-        $this->assertArrayHasKey('code', $response);
-        $this->assertSame($response['code'], 200);
-        $this->assertArrayHasKey('isItRaining', $response);
-        $this->assertIsBool($response['isItRaining']);
+        $this->assertArrayHasKey('activity', $response);
+        $this->assertIsString($response['activity']);
+        $this->assertArrayHasKey('type', $response);
+        $this->assertIsString($response['type']);
     }
 }
 

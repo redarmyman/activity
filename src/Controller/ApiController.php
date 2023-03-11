@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
+use App\Service\ActivityService;
 use App\Service\WeatherService;
-use App\Service\MessageGenerator;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ServerException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,7 +23,7 @@ class ApiController extends AbstractController
     }
 
     #[Route('/v1/whattodo', name: 'api_activity')]
-    public function activity(Request $request): JsonResponse
+    public function activity(Request $request, ActivityService $activityService): JsonResponse
     {
         $isItRainingResponse = $this->isItRaining($request);
 
@@ -33,7 +33,9 @@ class ApiController extends AbstractController
             return $isItRainingResponse;
         }
 
-        dd($isItRaining);
+        $activity = $activityService->getActivity($isItRaining['isItRaining']);
+
+        return new JsonResponse($activity);
     }
 
     private function isItRainingResponse(?string $lat, ?string $lon): JsonResponse

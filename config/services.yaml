@@ -35,5 +35,19 @@ services:
         arguments:
             $client: '@guzzle.client.weather_api'
 
+    App\Factory\Guzzle\ActivityApiClientFactory: ~
+
+    guzzle.client.activity_api:
+        class: GuzzleHttp\Client
+        factory: '@App\Factory\Guzzle\ActivityApiClientFactory'
+        arguments:
+            $config:
+                base_uri: '%env(ACTIVITY_API_BASE_URI)%'
+
+    App\Service\ActivityService:
+        class: App\Service\ActivityService
+        arguments:
+            $client: '@guzzle.client.activity_api'
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
